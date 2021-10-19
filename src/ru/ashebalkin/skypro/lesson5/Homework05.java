@@ -1,4 +1,4 @@
-package ru.ashebalkin.skypro.lesson05;
+package ru.ashebalkin.skypro.lesson5;
 
 public class Homework05 {
 
