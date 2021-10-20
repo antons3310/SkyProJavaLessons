@@ -12,6 +12,7 @@ public class Homework05 {
         test6();
         test7();
         test8();
+        test9();
     }
 
     public static void test1() {
@@ -43,6 +44,10 @@ public class Homework05 {
     }
 
     public static void test8() {
+
+    }
+
+    public static void test9() {
 
     }
 }
