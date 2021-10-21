@@ -1,23 +1,21 @@
 package ru.ashebalkin.skypro.lesson5;
 
+import java.util.Arrays;
+
 public class Homework05 {
 
     public static void main(String[] args) {
         // write your code here
-/*
         test1();
         test2();
         test3();
         test4();
-*/
         test5();
-/*
         test6();
         test7();
         test8();
         test9();
-*/
-    }
+  }
 
     public static int[] generateRandomArray() {
         java.util.Random random = new java.util.Random();
@@ -108,30 +106,102 @@ public class Homework05 {
     }
 
     public static void test5() {
+        int n = 3;
 
-        int [] [] field = new int[3][3];
+        int [][] matrix = new int[n][n];
+        int count = matrix.length;
+        for (int x = 0; x < n; x++) {
+            for (int y = 0; y < n; y++) {
+                if (x==y) {
+                    matrix[x][y] = 1;
+                }
+                if (y == count-1) {
+                    matrix[x][y] = 1;
+                }
+            }
+            count--;
+        }
 
-        for (int [] row : field) {
-            for (int column : row) {
-                System.out.print(column + " ");
+        for (int[] x : matrix) {
+            for (int y : x) {
+                System.out.print(y + " ");
             }
             System.out.println();
         }
+
+
     }
 
     public static void test6() {
+        int [] arr = new int[] {6,5,4,3,2,1};
+        System.out.println(Arrays.toString(arr));
+
+        int [] addArr = new int[6];
+
+        int len = addArr.length - 1;
+
+        for (int i = arr.length-1; i >= 0; i--) {
+            addArr[len - i] = arr[i];
+        }
+
+        System.out.println(Arrays.toString(addArr));
 
     }
 
     public static void test7() {
+        int [] arr = new int[] {6,5,4,3,2,1};
+        System.out.println(Arrays.toString(arr));
+
+        int a = 0;
+        int len = arr.length;
+
+        for (int i = 0; i < len / 2; i++) {
+            arr[i] = arr[i] + arr[len - 1 - i];
+            arr[len - 1 - i] = arr[i] - arr[len - 1 - i];
+            arr[i] = arr[i] - arr[len - 1 - i];
+        }
+
+        System.out.println(Arrays.toString(arr));
 
     }
 
     public static void test8() {
+        int [] arr = new int[]  {-6,2,5,-8,8,10,4,-7,12,1};
+        System.out.println(Arrays.toString(arr));
+        Arrays.sort(arr);
 
+        int target = 2;
+        boolean getResult = false;
+
+        for (int i = 0 ; i < arr.length; i++) {
+            if (getResult) {
+                break;
+            } else {
+                for (int i1 = i+1; i1 < arr.length; i1++) {
+                    if ((arr[i] + arr[i1]) == target) {
+                        System.out.println(("Искомая пара чисел: " + arr[i] + " и " + arr[i1]));
+                        getResult = true;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public static void test9() {
+        int [] arr = new int[]  {-6,2,5,-8,8,10,4,-7,12,1};
+        System.out.println(Arrays.toString(arr));
 
+        Arrays.sort(arr);
+
+        int target = 2;
+
+        for (int i = 0 ; i < arr.length; i++) {
+            for (int i1 = i+1; i1 < arr.length; i1++) {
+                if ((arr[i] + arr[i1]) == target) {
+                    System.out.println(("Искомая пара чисел: " + arr[i] + " и " + arr[i1]));
+                }
+            }
+        }
     }
 }
