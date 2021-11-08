@@ -1,7 +1,7 @@
 package ru.ashebalkin.skypro.lesson9;
 
 public class Library {
-    private final Book [] books;
+    private final Book[] books;
 
     public Library(int arrRange){
         this.books = new Book [arrRange];
