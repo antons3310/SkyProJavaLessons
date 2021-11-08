@@ -4,7 +4,7 @@ public class Library {
     private final Book[] books;
 
     public Library(int arrRange){
-        this.books = new Book [arrRange];
+        this.books = new Book[arrRange];
     }
 
     public void addBook(Book book){
