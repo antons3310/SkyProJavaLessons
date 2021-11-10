@@ -56,7 +56,7 @@ public class Employee {
         return salaryAmount;
     }
 
-    public static List getEmployeesList(){
+    public static List <Employee> getEmployeesList(){
         return employeesList;
     }
 
@@ -65,6 +65,9 @@ public class Employee {
     }
 
     public void setSalaryAmount(double salaryAmount) {
+        if (salaryAmount <0){
+            throw new NullPointerException("Передано отрицатлеьное значение, изменение не возможно");
+        }
         this.salaryAmount = salaryAmount;
     }
 
@@ -75,4 +78,5 @@ public class Employee {
                     + ", Подразделение - " +  departmentId
                     + ", Зарплата - " + salaryAmount;
     }
+
 }
