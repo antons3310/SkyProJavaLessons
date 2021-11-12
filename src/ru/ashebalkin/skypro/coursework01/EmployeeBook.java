@@ -6,32 +6,35 @@ import java.util.function.BinaryOperator;
 public class EmployeeBook {
     private final Employee[] employees;
 
-    public EmployeeBook(int arrRange) {
-        if (arrRange <= 10) {
-            throw new NullPointerException("Размер массива должен быть строго больше 10 ячеек");
-        } else {
-            this.employees = new Employee[arrRange];
-            fillCurEmployeekArr(this.employees);
-        }
+    public EmployeeBook() {
+        this.employees = new Employee[11];
+        fillEmployeeArray(this.employees);
     }
 
     public void addNewEmployee(String lastName, String firstName, String middleName, int departmentId, double salaryAmount) {
         Employee newEmp = new Employee(lastName, firstName, middleName, departmentId, salaryAmount);
+        boolean noMoreSpace = false;
         for (int i = 0; i < this.employees.length; i++) {
             if (this.employees[i] == null) {
                 this.employees[i] = newEmp;
+                noMoreSpace = false;
                 break;
+            } else {
+                noMoreSpace = true;
             }
+        }
+        if (noMoreSpace == true) {
+            throw new NullPointerException("Нет свободных ячеек массива");
         }
     }
 
     public void deleteEmployeeFromBook(int id) {
         Employee e = null;
-        for (int i = 0; i < this.employees.length; i++) {
-            if (this.employees[i] != null) {
-                if (this.employees[i].getEmployeeId() == id) {
-                    e = this.employees[i];
-                    this.employees[i] = null;
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                if (employees[i].getEmployeeId() == id) {
+                    e = employees[i];
+                    employees[i] = null;
                     break;
                 }
             }
@@ -43,13 +46,11 @@ public class EmployeeBook {
 
     public void deleteEmployeeFromBook(String lastName, String firstName, String middleName) {
         Employee e = null;
-        for (int i = 0; i < this.employees.length; i++) {
-            if (this.employees[i] != null) {
-                if (this.employees[i].getLastName().toLowerCase().equals(lastName.toLowerCase()) &&
-                        this.employees[i].getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
-                        this.employees[i].getMiddleName().toLowerCase().equals(middleName.toLowerCase())) {
-                    e = this.employees[i];
-                    this.employees[i] = null;
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                if (employees[i].equals(lastName, firstName, middleName)) {
+                    e = employees[i];
+                    employees[i] = null;
                     return;
                 }
             }
@@ -58,19 +59,33 @@ public class EmployeeBook {
             throw new NullPointerException("По переданным ФИО сотрудника не найдно");
         }
     }
+//    }    public void deleteEmployeeFromBook(String lastName, String firstName, String middleName) {
+//        Employee e = null;
+//        for (int i = 0; i < employees.length; i++) {
+//            if (employees[i] != null) {
+//                if (employees[i].getLastName().toLowerCase().equals(lastName.toLowerCase()) &&
+//                        employees[i].getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
+//                        employees[i].getMiddleName().toLowerCase().equals(middleName.toLowerCase())) {
+//                    e = employees[i];
+//                    employees[i] = null;
+//                    return;
+//                }
+//            }
+//        }
+//        if (e == null) {
+//            throw new NullPointerException("По переданным ФИО сотрудника не найдно");
+//        }
+//    }
 
     public void updateEmployeeInfo(String lastName, String firstName, String middleName, double salary) {
         Employee e = null;
 
-        //     checkSalaryChange(salary);
+        checkSalaryChange(salary);
 
-        for (int i = 0; i < this.employees.length; i++) {
-            if (this.employees[i] != null) {
-                if (this.employees[i].getLastName().toLowerCase().equals(lastName.toLowerCase()) &&
-                        this.employees[i].getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
-                        this.employees[i].getMiddleName().toLowerCase().equals(middleName.toLowerCase()) &&
-                        this.employees[i] != null) {
-                    this.employees[i].setSalaryAmount(salary);
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                if (employees[i].equals(lastName, firstName, middleName) && employees[i] != null) {
+                    employees[i].setSalaryAmount(salary);
                     return;
                 }
             }
@@ -88,12 +103,9 @@ public class EmployeeBook {
         }
 
         for (int i = 0; i < this.employees.length; i++) {
-            if (this.employees[i] != null) {
-                if (this.employees[i].getLastName().toLowerCase().equals(lastName.toLowerCase()) &&
-                        this.employees[i].getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
-                        this.employees[i].getMiddleName().toLowerCase().equals(middleName.toLowerCase()) &&
-                        this.employees[i] != null) {
-                    this.employees[i].setDepartmentId(departmentId);
+            if (employees[i] != null) {
+                if (employees[i].equals(lastName, firstName, middleName) && employees[i] != null) {
+                    employees[i].setDepartmentId(departmentId);
                     return;
                 }
             }
@@ -106,20 +118,17 @@ public class EmployeeBook {
     public void updateEmployeeInfo(String lastName, String firstName, String middleName, double salary, int departmentId) {
         Employee e = null;
 
-        //      checkSalaryChange(salary);
+        checkSalaryChange(salary);
 
         if (departmentId < 1 || departmentId > 5) {
             throw new NullPointerException("Номера отделов в диапазоне от 1 до 5");
         }
 
         for (int i = 0; i < this.employees.length; i++) {
-            if (this.employees[i] != null) {
-                if (this.employees[i].getLastName().toLowerCase().equals(lastName.toLowerCase()) &&
-                        this.employees[i].getFirstName().toLowerCase().equals(firstName.toLowerCase()) &&
-                        this.employees[i].getMiddleName().toLowerCase().equals(middleName.toLowerCase()) &&
-                        this.employees[i] != null) {
-                    this.employees[i].setSalaryAmount(salary);
-                    this.employees[i].setDepartmentId(departmentId);
+            if (employees[i] != null) {
+                if (employees[i].equals(lastName, firstName, middleName) && employees[i] != null) {
+                    employees[i].setSalaryAmount(salary);
+                    employees[i].setDepartmentId(departmentId);
                     return;
                 }
             }
@@ -151,19 +160,62 @@ public class EmployeeBook {
         }
     }
 
-//    private void checkSalaryChange(double summ){
-//        if (summ < 0){
-//            throw new NullPointerException("Передана отрицательная сумма. Изменение не возможно");
-//        }
-//    }
+    public void printEmployeeByDepIdAlt() {
+        TreeMap<Integer, StringBuilder> map = new TreeMap<>();
+        StringBuilder strDep1 = new StringBuilder();
+        StringBuilder strDep2 = new StringBuilder();
+        StringBuilder strDep3 = new StringBuilder();
+        StringBuilder strDep4 = new StringBuilder();
+        StringBuilder strDep5 = new StringBuilder();
 
-    public void fillCurEmployeekArr(Employee[] employees) {
+        for (int i = 0; i < employees.length; i++) {
+            if (employees[i] != null) {
+                switch (employees[i].getDepartmentId()) {
+                    case 1:
+                        strDep1.append(getEmployeeInfoById(employees, employees[i].getEmployeeId(), 2)).append("\n");
+                        map.put(employees[i].getDepartmentId(), strDep1);
+                        break;
+                    case 2:
+                        strDep2.append(getEmployeeInfoById(employees, employees[i].getEmployeeId(), 2)).append("\n");
+                        map.put(employees[i].getDepartmentId(), strDep2);
+                        break;
+                    case 3:
+                        strDep3.append(getEmployeeInfoById(employees, employees[i].getEmployeeId(), 2)).append("\n");
+                        map.put(employees[i].getDepartmentId(), strDep3);
+                        break;
+                    case 4:
+                        strDep4.append(getEmployeeInfoById(employees, employees[i].getEmployeeId(), 2)).append("\n");
+                        map.put(employees[i].getDepartmentId(), strDep4);
+                        break;
+                    case 5:
+                        strDep5.append(getEmployeeInfoById(employees, employees[i].getEmployeeId(), 2)).append("\n");
+                        map.put(employees[i].getDepartmentId(), strDep5);
+                        break;
+                }
+            } else continue;
+        }
+
+        for (Map.Entry e : map.entrySet()) {
+            System.out.println("Список сотрудников отдела - " + e.getKey() + ":" + ("\n") + e.getValue());
+
+        }
+
+    }
+
+
+    private void checkSalaryChange(double summ) {
+        if (summ < 0) {
+            throw new NullPointerException("Передана отрицательная сумма. Изменение не возможно");
+        }
+    }
+
+    public void fillEmployeeArray(Employee[] employees) {
         for (int i = 0; i < Employee.getEmployeesList().size(); i++) {
             this.employees[i] = Employee.getEmployeesList().get(i);
         }
     }
 
-    public List<Employee> fillCurrEmployeeList(Employee[] employees) {
+    public List<Employee> fillEmployeeArrayList(Employee[] employees) {
         List<Employee> employeeList = new ArrayList<Employee>();
         for (int i = 0; i < Employee.getEmployeesList().size(); i++) {
             employeeList.add(this.employees[i]);
@@ -190,26 +242,23 @@ public class EmployeeBook {
     }
 
     //Найти сотрудника с минимальной зарплатой/Найти сотрудника с максимальной зарплатой.
-    //1 - для минимума
-    //2 - для максимума
-    public void getMinMaxSalary(int mode) {
-        List<Employee> empList = fillCurrEmployeeList(this.employees);
+    public void getMinSalary(int mode) {
+        List<Employee> empList = fillEmployeeArrayList(this.employees);
+
+        Employee employee = find(empList, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
+
+        System.out.println("Минимальная зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(this.employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
+    }
+
+
+    public void getMaxSalary() {
+        List<Employee> empList = fillEmployeeArrayList(this.employees);
 
         String direction;
-        if (mode == 1) {
-            direction = "Минимальная";
-        } else {
-            direction = "Максимальная";
-        }
 
-        Employee employee;
-        if (mode == 1) {
-            employee = find(empList, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
-        } else {
-            employee = find(empList, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
-        }
+        Employee employee = find(empList, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
 
-        System.out.println(direction + " зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(this.employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
+        System.out.println("Максимальная зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(this.employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
     }
 
     public Employee find(List<Employee> list, BinaryOperator<Employee> accumulator) {
@@ -267,26 +316,21 @@ public class EmployeeBook {
     }
 
     //Получить в качестве параметра номер отдела (1–5) и найти (Сотрудника с минимальной зарплатой) / (Сотрудника с максимальной зарплатой)
-    //1 - для минимума
-    //2 - для максимума
-    public void getMinMaxSalary(int mode, int departmentId) {
+    public void getMinSalary(int mode, int departmentId) {
 
-        List<Employee> empList = fillCurrEmployeeList(this.employees);
+        List<Employee> empList = fillEmployeeArrayList(this.employees);
 
-        String direction;
-        if (mode == 1) {
-            direction = "Минимальная";
-        } else {
-            direction = "Максимальная";
-        }
+        Employee employee = find(empList, departmentId, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
+        System.out.println("Минимальная зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(this.employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
+    }
+
+    public void getMaxSalary(int mode, int departmentId) {
+
+        List<Employee> empList = fillEmployeeArrayList(this.employees);
 
         Employee employee;
-        if (mode == 1) {
-            employee = find(empList, departmentId, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
-        } else {
-            employee = find(empList, departmentId, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
-        }
-        System.out.println(direction + " зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(this.employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
+        employee = find(empList, departmentId, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
+        System.out.println("Максимальная зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(this.employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
     }
 
     public Employee find(List<Employee> list, int departmentId, BinaryOperator<Employee> accumulator) {
@@ -338,8 +382,21 @@ public class EmployeeBook {
         }
     }
 
+    public String printDepartmentEmployeesInfo(int departmetId) {
+        String str = "";
+        for (Employee employee : this.employees) {
+            if (employee != null) {
+                if (employee.getDepartmentId() == departmetId) {
+                    str = getEmployeeInfoById(this.employees, employee.getEmployeeId(), 2);
+                }
+            }
+        }
+        return str;
+    }
+
+
     public void getEmployesBySum(double summ, int mode) {
-        List<Employee> empList = fillCurrEmployeeList(this.employees);
+        List<Employee> empList = fillEmployeeArrayList(this.employees);
 
         for (Employee employee : this.employees) {
             if (mode == 1) {

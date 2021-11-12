@@ -2,6 +2,7 @@ package ru.ashebalkin.skypro.coursework01;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Employee {
     public int employeeId;                          //Идентификатор
@@ -10,8 +11,9 @@ public class Employee {
     private final String middleName;                //Отчество
     private int departmentId;                       //подразделение
     private double salaryAmount;                     //Зарплата
-    private static int employeeCount = 0;           //Счетчик
+    public static int employeeCount;           //Счетчик
     private static final List employeesList = new ArrayList();
+
 
     public Employee(String lastName, String firstName, String middleName, int departmentId, double salaryAmount, int employeeId) {
         this.lastName = lastName;
@@ -65,18 +67,25 @@ public class Employee {
     }
 
     public void setSalaryAmount(double salaryAmount) {
-        if (salaryAmount <0){
-            throw new NullPointerException("Передано отрицатлеьное значение, изменение не возможно");
-        }
         this.salaryAmount = salaryAmount;
+    }
+
+    public boolean equals(String lastName, String firstName, String middleName) {
+        return firstName.toLowerCase().equals(firstName.toLowerCase())
+                && lastName.toLowerCase().equals(lastName.toLowerCase())
+                && middleName.toLowerCase().equals(middleName.toLowerCase());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(firstName, lastName, middleName);
     }
 
     @Override
     public String toString() {
-        return "Идентификатор сотрудника - " + employeeId
-                    + ", ФИО - " + lastName + ' ' + firstName + ' ' + middleName
-                    + ", Подразделение - " +  departmentId
-                    + ", Зарплата - " + salaryAmount;
+        return "ФИО - " + lastName + ' ' + firstName + ' ' + middleName
+                + ", Подразделение - " + departmentId
+                + ", Зарплата - " + salaryAmount;
     }
 
 }

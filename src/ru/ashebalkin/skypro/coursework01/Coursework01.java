@@ -1,13 +1,12 @@
 package ru.ashebalkin.skypro.coursework01;
 
-import ru.ashebalkin.skypro.lesson8.Book;
-
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.function.BinaryOperator;
 
 public class Coursework01 {
+    public static final String DEVIDER = "########################################";
 
     public static void main(String[] args) {
         Employee[] employees = baseLevel();
@@ -16,8 +15,6 @@ public class Coursework01 {
     }
 
     public static Employee[] baseLevel() {
-        String str = "#";
-        String s1 = str.repeat(40);
         Employee[] employees = new Employee[10];
 
         Employee anton = new Employee("Шебалкин", "Антон", "Сергеевич", 1, 25874.75);
@@ -31,38 +28,38 @@ public class Coursework01 {
         Employee sergey = new Employee("Ломака", "Сергей", "Дмитриевич", 5, 58114.13);
         Employee alexey = new Employee("Грошев", "Алексей", "Константиновчи", 5, 87444.55);
 
-        fillCurEmployeekArr(employees);
+        fillEmployeesArray(employees);
 
         getEmployeeInfo(employees);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         calcTotalSalaryPayment(employees);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
-        getMinMaxSalary(employees, 1);
-        System.out.println(s1);
+        getMinSalary(employees);
+        System.out.println(Coursework01.DEVIDER);
 
-        getMinMaxSalary(employees, 2);
-        System.out.println(s1);
+        getMaxSalary(employees);
+        System.out.println(Coursework01.DEVIDER);
 
         calcAvarageSalary(employees);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         printEmployeesInfo(employees);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         return employees;
     }
 
-    public static void fillCurEmployeekArr(Employee[] employees) {
-        for (int i = 0; i < Employee.getEmployeesList().size(); i++) {
+    public static void fillEmployeesArray(Employee[] employees) {
+        for (int i = 0; i < employees.length; i++) {
             employees[i] = (Employee) Employee.getEmployeesList().get(i);
         }
     }
 
     public static List<Employee> fillCurrEmployeeList(Employee[] employees) {
         List<Employee> employeeList = new ArrayList<Employee>();
-        for (int i = 0; i < Employee.getEmployeesList().size(); i++) {
+        for (int i = 0; i < employees.length; i++) {
             employeeList.add(employees[i]);
         }
         return employeeList;
@@ -86,39 +83,34 @@ public class Coursework01 {
         return totalSumm;
     }
 
-    //Найти сотрудника с минимальной зарплатой/Найти сотрудника с максимальной зарплатой.
-    //1 - для минимума
-    //2 - для максимума
-    public static void getMinMaxSalary(Employee[] employees, int mode) {
-        List<Employee> empList = fillCurrEmployeeList(employees);
+    //Найти сотрудника с минимальной зарплатой
+    public static void getMinSalary(Employee[] employees) {
+        double minSalary = employees[0].getSalaryAmount();
+        Employee emp = employees[0];
 
-        String direction;
-        if (mode == 1) {
-            direction = "Минимальная";
-        } else {
-            direction = "Максимальная";
-        }
-
-        Employee employee;
-        if (mode == 1) {
-            employee = find(empList, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
-        } else {
-            employee = find(empList, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
-        }
-
-        System.out.println(direction + " зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
-    }
-
-    public static Employee find(List<Employee> list, BinaryOperator<Employee> accumulator) {
-        Employee result = null;
-        for (Employee t : list) {
-            if (result == null) {
-                result = t;
-            } else {
-                result = accumulator.apply(result, t);
+        for (int i = 1; i < employees.length; i++) {
+            if (employees[i].getSalaryAmount() < minSalary) {
+                minSalary = employees[i].getSalaryAmount();
+                emp = employees[i];
             }
         }
-        return result;
+
+        System.out.println("Минимальная зарплата за меcяц = " + emp.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(employees, emp.getEmployeeId(), 1) + " В отделе: " + emp.getDepartmentId());
+    }
+
+    ///Найти сотрудника с максимальной зарплатой.
+    public static void getMaxSalary(Employee[] employees) {
+        double maxSalary = employees[0].getSalaryAmount();
+        Employee emp = employees[0];
+
+        for (int i = 1; i < employees.length; i++) {
+            if (employees[i].getSalaryAmount() >= maxSalary) {
+                maxSalary = employees[i].getSalaryAmount();
+                emp = employees[i];
+            }
+        }
+
+        System.out.println("Максимальная зарплата за меcяц = " + emp.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(employees, emp.getEmployeeId(), 1) + " В отделе: " + emp.getDepartmentId());
     }
 
     //Подсчитать среднее значение зарплат
@@ -155,42 +147,46 @@ public class Coursework01 {
     }
 
     public static void advancedLevel(Employee[] employees) {
-        String str = "#";
-        String s1 = str.repeat(40);
-
         double s = 16.3; //// значение в процентах для индексации
 
         changeIncreaseSalary(employees, s);
 
         getEmployeeInfo(employees);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         int dep = 2; //идентификатор отдела (число от 1 до 5)
 
-        getMinMaxSalary(employees, 1, dep);
-        System.out.println(s1);
+        getMinSalary(employees, dep);
+        System.out.println(Coursework01.DEVIDER);
 
-        getMinMaxSalary(employees, 2, dep);
-        System.out.println(s1);
+        getMaxSalary(employees, dep);
+        System.out.println(Coursework01.DEVIDER);
+
+
+        getMinSalary(employees, dep);
+        System.out.println(Coursework01.DEVIDER);
+
+        getMinSalary(employees, dep);
+        System.out.println(Coursework01.DEVIDER);
 
         calcTotalSalaryPayment(employees, dep);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         changeIncreaseSalary(employees, s, dep);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         getEmployeeInfo(employees);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         printEmployeesInfo(employees, dep);
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         double summ = 50000;
-        getEmployesBySum(employees, summ, 1);
-        System.out.println(s1);
+        getEmployesBySumLess(employees, summ);
+        System.out.println(Coursework01.DEVIDER);
 
-        getEmployesBySum(employees, summ, 2);
-        System.out.println(s1);
+        getEmployesBySumMore(employees, summ);
+        System.out.println(Coursework01.DEVIDER);
 
     }
 
@@ -206,24 +202,20 @@ public class Coursework01 {
     //Получить в качестве параметра номер отдела (1–5) и найти (Сотрудника с минимальной зарплатой) / (Сотрудника с максимальной зарплатой)
     //1 - для минимума
     //2 - для максимума
-    public static void getMinMaxSalary(Employee[] employees, int mode, int departmentId) {
+    public static void getMinSalary(Employee[] employees, int departmentId) {
 
         List<Employee> empList = fillCurrEmployeeList(employees);
 
-        String direction;
-        if (mode == 1) {
-            direction = "Минимальная";
-        } else {
-            direction = "Максимальная";
-        }
+        Employee employee = find(empList, departmentId, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
 
-        Employee employee;
-        if (mode == 1) {
-            employee = find(empList, departmentId, BinaryOperator.minBy(Comparator.comparing(Employee::getSalaryAmount)));
-        } else {
-            employee = find(empList, departmentId, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
-        }
-        System.out.println(direction + " зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
+        System.out.println("Минимальная зарплата за меcяц = " + employee.getSalaryAmount() + " у сотрудника (ФИО): " + getEmployeeInfoById(employees, employee.getEmployeeId(), 1) + " В отделе: " + employee.getDepartmentId());
+    }
+
+    public static void getMaxSalary(Employee[] employees, int departmentId) {
+
+        List<Employee> empList = fillCurrEmployeeList(employees);
+
+        Employee employee = find(empList, departmentId, BinaryOperator.maxBy(Comparator.comparing(Employee::getSalaryAmount)));
     }
 
     public static Employee find(List<Employee> list, int departmentId, BinaryOperator<Employee> accumulator) {
@@ -274,49 +266,53 @@ public class Coursework01 {
         }
     }
 
-    public static void getEmployesBySum(Employee[] employees, double summ, int mode) {
+    public static void getEmployesBySumLess(Employee[] employees, double summ) {
         List<Employee> empList = fillCurrEmployeeList(employees);
 
         for (Employee employee : employees) {
-            if (mode == 1) {
-                if (employee.getSalaryAmount() <= summ) {
-                    System.out.println(getEmployeeInfoById(employees, employee.getEmployeeId(), 2));
-                }
+            if (employee.getSalaryAmount() <= summ) {
+                System.out.println(getEmployeeInfoById(employees, employee.getEmployeeId(), 2));
             }
-            if (mode == 2) {
-                if (employee.getSalaryAmount() > summ) {
-                    System.out.println(getEmployeeInfoById(employees, employee.getEmployeeId(), 2));
-                }
+
+        }
+
+    }
+
+    public static void getEmployesBySumMore(Employee[] employees, double summ) {
+        List<Employee> empList = fillCurrEmployeeList(employees);
+
+        for (Employee employee : employees) {
+            if (employee.getSalaryAmount() > summ) {
+                System.out.println(getEmployeeInfoById(employees, employee.getEmployeeId(), 2));
             }
         }
 
     }
 
     public static void hardLevel() {
-        String str = "#";
-        String s1 = str.repeat(40);
-        EmployeeBook book = new EmployeeBook(15);
+        EmployeeBook book = new EmployeeBook();
 
-        book.addNewEmployee("Терещено", "Елена","Витальевна",3,68444.32);
+        book.addNewEmployee("Терещено", "Елена", "Витальевна", 3, 68444.32);
         book.getEmployeeInfo();
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         book.deleteEmployeeFromBook(11);
         book.getEmployeeInfo();
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         book.deleteEmployeeFromBook("Павлов", "Алексей", "Леонидович");
         book.getEmployeeInfo();
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         book.updateEmployeeInfo("Дядюра", "Дмитрий", "Анатольевич", 999999, 3);
         book.getEmployeeInfo();
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
         book.printEmployeeByDepId();
-        System.out.println(s1);
+        System.out.println(Coursework01.DEVIDER);
 
-
+        book.printEmployeeByDepIdAlt();
+        System.out.println(DEVIDER);
     }
 
 }
